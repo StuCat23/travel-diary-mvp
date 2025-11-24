@@ -22,6 +22,7 @@ interface Pin {
 interface MapProps {
     pins: Pin[];
     onPinAdd: (lat: number, lng: number) => void;
+    onPinClick: (pinId: string) => void;
 }
 
 function LocationMarker({ onPinAdd }: { onPinAdd: (lat: number, lng: number) => void }) {
@@ -33,7 +34,7 @@ function LocationMarker({ onPinAdd }: { onPinAdd: (lat: number, lng: number) => 
     return null;
 }
 
-export default function Map({ pins, onPinAdd }: MapProps) {
+export default function Map({ pins, onPinAdd, onPinClick }: MapProps) {
     const [center, setCenter] = useState<[number, number]>([51.505, -0.09]); // Default to London
 
     return (
@@ -45,7 +46,11 @@ export default function Map({ pins, onPinAdd }: MapProps) {
             <LocationMarker onPinAdd={onPinAdd} />
             {pins.map((pin) => (
                 <Marker key={pin.id} position={[pin.lat, pin.lng]}>
-                    <Popup>{pin.name}</Popup>
+                    <Popup>{
+                    pin.name}
+                    <br />
+                    <button onClick={() => onPinClick(pin.id)} className='text-blue-500 underline'>Add Entry</button>
+                    </Popup>
                 </Marker>
             ))}
         </MapContainer>
